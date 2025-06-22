@@ -1,0 +1,10 @@
+[Unit]
+Description=What am I exporter for Sway WM
+
+[Service]
+Restart=on-failure
+RestartSec=5
+ExecStart=/usr/bin/whatami-swaywm
+
+[Install]
+WantedBy=default.target

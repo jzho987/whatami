@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+set -eo pipefail
+echo "Starting What Am I Exporter for Sway WM"
+
+PATH=$HOME/.data/swaywm/
+FILE=$(/bin/date +%Y-%m-%dT%H:%M:%S)
+echo "Saving to Path: $PATH/$FILE"
+
+/bin/swaymsg -t subscribe -m '["window"]' >> $PATH$FILE
