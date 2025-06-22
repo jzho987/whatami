@@ -3,8 +3,17 @@
 set -eo pipefail
 echo "Starting What Am I Exporter for Sway WM"
 
-PATH=$HOME/.data/swaywm/
+DIR=$HOME/.data/swaywm/
 FILE=$(/bin/date +%Y-%m-%dT%H:%M:%S)
-echo "Saving to Path: $PATH/$FILE"
 
-/bin/swaymsg -t subscribe -m '["window"]' >> $PATH$FILE
+echo "Saving to Path: $DIR$FILE"
+
+/bin/mkdir -p $DIR
+
+/bin/swaymsg -t subscribe -m '["window"]' | /bin/jq -c '. + {timestamp: (now | strflocaltime("%Y-%m-%dT%H:%M:%S"))}' >> $DIR/$FILE &
+
+/bin/swayidle \
+    timeout 60 'echo "{\"type\": \"idle\", \"unix_timestamp\": \"$(date +%Y-%m-%dT%H:%M:%S)\"}"' \
+    resume 'echo "{\"type\": \"resume\", \"unix_timestamp\": \"$(date +%Y-%m-%dT%H:%M:%S)\"}"' >> $DIR/$FILE &
+
+wait
