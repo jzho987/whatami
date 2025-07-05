@@ -1,0 +1,19 @@
+#!/usr/bin/bash
+
+set -eo pipefail
+echo "Starting What Am I Exporter for Sway WM"
+
+if [[ -z $SWAYSOCK ]]; then
+        echo "SWAYSOCK is not set, sleeping then exit..."
+        sleep 5
+        exit 1
+fi
+
+DIR=$HOME/.data/swaywm/events
+FILE=$(/bin/date +%Y-%m-%dT%H:%M:%S)
+
+echo "Saving to Path: $DIR/$FILE"
+
+/bin/mkdir -p $DIR
+
+/bin/swaymsg -t subscribe -m '["window"]' | /bin/jq -c '. + {timestamp: (now | strflocaltime("%Y-%m-%dT%H:%M:%S"))}' >> $DIR/$FILE
