@@ -1,0 +1,61 @@
+openapi: 3.0.4
+
+info:
+  title: What Am I
+  description: .
+  version: 0.1.9
+
+paths:
+  "/usage/pc":
+    parameters:
+      - in: query
+        name: startTime
+        description: The start time of the usage data in unix epoch seconds.
+        schema:
+          type: integer
+      - in: query
+        name: endTime
+        description: The end time of the usage data in unix epoch seconds.
+        schema:
+          type: integer
+    get:
+      operationId: GetPCUsage
+      description: Get the usage information for software on the pc within a time range.
+      responses:
+        200:
+          description: An array of values representing the daily usage.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IGetUsageResponseDTO"
+      tags:
+        - usage
+
+components:
+  schemas:
+    IGetUsageResponseDTO:
+      type: object
+      required: [usageList]
+      properties:
+        usageList:
+          description: A list of usage items.
+          $ref: "#/components/schemas/IUsageItemDTO"
+
+    IUsageItemDTO:
+      description: A datapoint to describe the usage of a particular item.
+      type: object
+      required: []
+      properties:
+        name:
+          type: string
+          example: "Alacritty"
+        startTime:
+          type: integer
+          example: 1751701000
+        endTime:
+          type: integer
+          example: 1751701520
+
+          
+
+

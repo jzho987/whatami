@@ -1,0 +1,11 @@
+.gitignore
+.npmignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/IGetUsageResponseDTO.md
+docs/IUsageItemDTO.md
+docs/UsageApi.md
+git_push.sh
+index.ts
